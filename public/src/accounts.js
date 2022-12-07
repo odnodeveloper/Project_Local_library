@@ -16,19 +16,14 @@ function sortAccountsByLastName(accounts) {
 }
 
 
-
-function getTotalNumberOfBorrows(account, books) {
-  let totalBorrows = 0;     // value should be a number
-  for (let i = 0; i < books.length; i++) {    // loop through the book array
-    const book = books[i];      //  change code more readable
-    const borrows = book.borrows;     // retrieve property from object  
-    borrows.forEach((borrow) => {     
-      if (account.id == borrow.id)    // loop through the borrows to find account id
-        totalBorrows += 1;      // add each found id to totalBorrows 
-    })
-  }
-  return totalBorrows;    // return total number of borrows
-}
+function getTotalNumberOfBorrows(account, books) { 	
+  const {id} = account;	     // destructure to reference specific user ID 
+      return books.reduce((total, book) => {       // loop through the books array of objects
+          return (total + book.borrows.filter((borrow) => borrow.id === id)     // create a new array of borrows that have same ID
+                   .reduce((accumulatorBorrows, borrow) =>    // for every individual borrow within new borrows array
+                     accumulatorBorrows + 1, 0));   // add one to accumulator
+      }, 0);
+  };
 
 
 
